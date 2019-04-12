@@ -1,6 +1,5 @@
 package com.examples.hops.spark.geospark;
 
-import com.examples.hops.spark.common.HDFSWriter;
 import com.vividsolutions.jts.geom.Polygon;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaSparkContext;
