@@ -1,4 +1,4 @@
-package com.examples.hops.spark.geospark;
+package com.examples.bare.spark.geospark;
 
 import java.io.IOException;
 

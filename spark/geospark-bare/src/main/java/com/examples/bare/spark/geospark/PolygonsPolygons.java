@@ -1,4 +1,4 @@
-package com.examples.hops.spark.geospark;
+package com.examples.bare.spark.geospark;
 
 import com.vividsolutions.jts.geom.Polygon;
 import org.apache.spark.api.java.JavaPairRDD;
