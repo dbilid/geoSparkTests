@@ -14,3 +14,17 @@ To add the files into the HDFS:
     $hdfs dfs -put path_to_dataset/dataset.tsv /Projects/demo_spark_kgiann01/Resources
 
 * See the newly added files in [Projects/demo_spark_kgiann01/Resources](http://localhost:50070/explorer.html#/Projects/demo_spark_kgiann01/Resources)
+* Build the application like any other maven app:
+
+    $mvn clean package
+
+* Move the jar file to the desired location (if needed)
+* Use the following command to run the spark application by saying to use the just created geospark jar application:
+
+    $spark-submit \
+     --class com.examples.bare.spark.geospark.PolygonsPolygons \
+     --master spark://pyravlos3:7077 \
+     --deploy-mode client  \
+     --conf spark.executor.memory=5g \
+     --conf spark.driver.memory=4g \
+     /home/kgiann/Downloads/geospark-examples-spark-bare-1.0.0-SNAPSHOT-jar-with-dependencies.jar
