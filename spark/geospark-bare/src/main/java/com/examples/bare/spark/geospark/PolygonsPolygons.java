@@ -25,7 +25,8 @@ public class PolygonsPolygons {
                 .getOrCreate();
 
         JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
-        String arealm = "hdfs:///Projects/demo_spark_kgiann01/Resources/arealm_merge.txt";
+        String arealm = "hdfs://pyravlos3:9000/Projects/demo_spark_kgiann01/Resources/public_geo_values.csv";
+        int pointRDDOffset = 2; 
         FileDataSplitter splitter = FileDataSplitter.WKT; // input file format
         Integer n_partitions = 1; // number of partitions
         Integer n_cores = 8; // number of partitions
@@ -39,10 +40,10 @@ public class PolygonsPolygons {
         long resultSetCount;
         long tStartRDD = System.currentTimeMillis();
         //create PointRDD from datasets NO INDEX
-        PolygonRDD objectPolygonARDD = new PolygonRDD(sc, arealm, splitter, true, n_partitions, StorageLevel.MEMORY_ONLY());
+        PolygonRDD objectPolygonARDD = new PolygonRDD(sc, arealm, 2, 3, splitter, true, n_partitions, StorageLevel.MEMORY_ONLY());
         objectPolygonARDD.spatialPartitioning(GridType.EQUALGRID);
         objectPolygonARDD.rawSpatialRDD.persist(StorageLevel.MEMORY_ONLY());
-        PolygonRDD objectPolygonBRDD = new PolygonRDD(sc, arealm, splitter, true, n_partitions, StorageLevel.MEMORY_ONLY());
+        PolygonRDD objectPolygonBRDD = new PolygonRDD(sc, arealm, 2, 3, splitter, true, n_partitions, StorageLevel.MEMORY_ONLY());
         objectPolygonBRDD.spatialPartitioning(objectPolygonARDD.grids);
         objectPolygonBRDD.rawSpatialRDD.persist(StorageLevel.MEMORY_ONLY());
         long tEndRDD = System.currentTimeMillis();
@@ -75,7 +76,7 @@ public class PolygonsPolygons {
         }
 
         double avgExecTime = elapsedSeconds / iter;
-        try (HDFSWriter writer = new HDFSWriter("hdfs:///Projects/demo_spark_kgiann01/Resources/geospatial_results.txt")) {
+        try (HDFSWriter writer = new HDFSWriter("hdfs://pyravlos3:9000/Projects/demo_spark_kgiann01/Resources/geospatial_results.txt")) {
             writer.write("GeoSpark", "PolygonsContainPolygons", false, n_partitions, n_cores , warmupTime, avgExecTime, resultSetCount);
         } catch (IOException e) {
             e.printStackTrace();
